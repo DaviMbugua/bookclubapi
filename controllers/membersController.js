@@ -77,13 +77,63 @@ export async function viewAllMembers(req, res) {
 }
 
 //Update member record
-export function updateMember(req, res) {
-    console.log(req.body);
-    res.send(req.body)
+export async function updateMember(req, res) {
+    //console.log(req.body);
+    //res.send(req.body)
+    try {
+        
+        let updatedmember = await Member.update(req.body,{where:{member_id: req.params.id}});
+        if (updatedmember) {
+            res.json({
+                success: true,
+                message: 'Member records updated successfully',
+                data: updatedmember
+            })
+        } else {
+            res.json({
+                success: true,
+                message: 'No Member records found.',
+            })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Oopss! Something is wrong..."
+        })
+    }
 }
 
+
 //Delete a member
-export function deleteMember(req, res) {
-    console.log(req.body);
-    res.send(req.body)
+export async function deleteMember(req, res) {
+    //console.log(req.body);
+    //res.send(req.body)
+    try {
+        
+        let memberToDelete = await Member.findAll({where:{member_id:req.params.id}});
+        if (memberToDelete) {
+            let deletedMember = await Member.destroy({where:{member_id:req.params.id}});
+            if (deletedMember){
+                res.json({
+                    success: true,
+                    message: 'Member records deleted successfully',
+                    
+                })
+            } else {
+                res.json({
+                    success: true,
+                    message: 'No Member records found.',
+                })
+            }
+
+        }
+            
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Oopss! Something is wrong..."
+        })
+    }
 }

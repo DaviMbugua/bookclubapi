@@ -1,4 +1,7 @@
-const Sequelize = require('sequelize');
+import Sequelize from "sequelize";
+import {sequelize} from "../db/dbConnect.js";
+
+//const Sequelize = require('sequelize');
 
 const Books = sequelize.define('member', {
   book_id: {
